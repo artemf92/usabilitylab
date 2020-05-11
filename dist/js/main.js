@@ -3,6 +3,10 @@
 var slider = document.querySelector('.sliders-list');
 var arrowBottom = document.querySelector('.arrow-bottom');
 var arrowTop = document.querySelector('.arrow-top');
+var thirdSlideArrowLeft = document.getElementById('slide__control-left');
+var thirdSlideArrowRight = document.getElementById('slide__control-right');
+var thirdSlide = document.querySelector('.third-slide');
+var thirdSlideItems = document.querySelectorAll('.third-slide li');
 var sectionSlider = document.querySelector('.sliders');
 var pagination = document.querySelectorAll('.circle');
 var backgrounds = document.querySelectorAll('.background');
@@ -120,6 +124,38 @@ function addEvent(elm, evType, fn, useCapture) {
   } else {
     elm['on' + evType] = fn;
   }
+}
+
+function thirdSlideRight() {
+  for (var i = 0; i < thirdSlideItems.length; i++) {
+    if (i < 5) thirdSlideItems[i].classList.add('hidden');
+  }
+
+  setTimeout(function () {
+    for (var _i = 0; _i < thirdSlideItems.length; _i++) {
+      if (_i > 4) thirdSlideItems[_i].classList.remove('hidden');
+    }
+  }, 500);
+  thirdSlideArrowRight.style.opacity = 0;
+  thirdSlideArrowRight.style.zIndex = -999;
+  thirdSlideArrowLeft.style.zIndex = 999;
+  thirdSlideArrowLeft.style.opacity = 1;
+}
+
+function thirdSlideLeft() {
+  for (var i = 0; i < thirdSlideItems.length; i++) {
+    if (i > 4) thirdSlideItems[i].classList.add('hidden');
+  }
+
+  setTimeout(function () {
+    for (var _i2 = 0; _i2 < thirdSlideItems.length; _i2++) {
+      if (_i2 < 5) thirdSlideItems[_i2].classList.remove('hidden');
+    }
+  }, 500);
+  thirdSlideArrowLeft.style.opacity = 0;
+  thirdSlideArrowLeft.style.zIndex = -999;
+  thirdSlideArrowRight.style.zIndex = 999;
+  thirdSlideArrowRight.style.opacity = 1;
 } // Закрытие сайдбара
 
 
@@ -152,6 +188,12 @@ arrowBottom.addEventListener('click', function () {
 });
 arrowTop.addEventListener('click', function () {
   moveSlider('prev');
+});
+thirdSlideArrowRight.addEventListener('click', function () {
+  thirdSlideRight();
+});
+thirdSlideArrowLeft.addEventListener('click', function () {
+  thirdSlideLeft();
 }); // Обработчик стрелок на клавиатуре
 
 window.addEventListener('keydown', function (evt) {
@@ -166,9 +208,13 @@ window.addEventListener('keydown', function (evt) {
 
     case 'ArrowLeft':
       $('.carousel').carousel('prev');
+      thirdSlideLeft();
+      break;
 
     case 'ArrowRight':
       $('.carousel').carousel('next');
+      thirdSlideRight();
+      break;
   }
 });
 addEvent(window, 'mousewheel', wheel);
