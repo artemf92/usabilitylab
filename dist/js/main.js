@@ -8,7 +8,8 @@ var thirdSlideArrowRight = document.getElementById('slide__control-right');
 var thirdSlide = document.querySelector('.third-slide');
 var thirdSlideItems = document.querySelectorAll('.third-slide li');
 var sectionSlider = document.querySelector('.sliders');
-var pagination = document.querySelectorAll('.circle');
+var pagination = document.querySelector('.slider-pagination');
+var circles = document.querySelectorAll('.circle');
 var backgrounds = document.querySelectorAll('.background');
 var carousel = document.querySelectorAll('.carousel');
 var sidebar = document.querySelector('#wrapper');
@@ -39,10 +40,10 @@ function showBlock(el, speed) {
 }
 
 function toggleClass(item) {
-  for (var i = 0; i < pagination.length; i++) {
+  for (var i = 0; i < circles.length; i++) {
     if (i !== item) {
-      pagination[i].classList.remove('active');
-    } else pagination[i].classList.add('active');
+      circles[i].classList.remove('active');
+    } else circles[i].classList.add('active');
   }
 }
 
@@ -194,6 +195,47 @@ thirdSlideArrowRight.addEventListener('click', function () {
 });
 thirdSlideArrowLeft.addEventListener('click', function () {
   thirdSlideLeft();
+});
+pagination.addEventListener('click', function (evt) {
+  var sliderNumber = +evt.target.getAttribute('id').split('circle-').join('');
+  var resolution = document.documentElement.clientWidth >= 1200 ? 'Y' : 'X';
+  var prevSlider;
+
+  for (var i = 0; i < circles.length; i++) {
+    if (circles[i].classList.contains('active')) {
+      prevSlider = circles[i].getAttribute('id').split('circle-').join('');
+    }
+  }
+
+  switch (sliderNumber) {
+    case 1:
+      slider.style.transform = "translate".concat(resolution, "(0%)");
+      arrowTop.style.opacity = 0;
+      arrowTop.style.zIndex = -100;
+      arrowBottom.style.opacity = 1;
+      arrowBottom.style.zIndex = 100;
+      showBlock(backgrounds[0], 100, backgrounds[1]);
+      toggleClass(0);
+      break;
+
+    case 2:
+      slider.style.transform = "translate".concat(resolution, "(-33.3%)");
+      arrowTop.style.opacity = 1;
+      arrowTop.style.zIndex = 100;
+      arrowBottom.style.opacity = 1;
+      arrowBottom.style.zIndex = 100;
+      showBlock(backgrounds[1], 90, backgrounds[+prevSlider - 1]);
+      toggleClass(1);
+      break;
+
+    case 3:
+      slider.style.transform = "translate".concat(resolution, "(-66.6%)");
+      arrowBottom.style.opacity = 0;
+      arrowBottom.style.zIndex = -100;
+      showBlock(backgrounds[2], 100, backgrounds[+prevSlider - 1]);
+      toggleClass(2);
+      break;
+  }
 }); // Обработчик стрелок на клавиатуре
 
 window.addEventListener('keydown', function (evt) {
