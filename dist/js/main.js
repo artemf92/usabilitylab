@@ -214,7 +214,7 @@ pagination.addEventListener('click', function (evt) {
       arrowTop.style.zIndex = -100;
       arrowBottom.style.opacity = 1;
       arrowBottom.style.zIndex = 100;
-      showBlock(backgrounds[0], 100, backgrounds[1]);
+      showBlock(backgrounds[0], 100, backgrounds[+prevSlider - 1]);
       toggleClass(0);
       break;
 
